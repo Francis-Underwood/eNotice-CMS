@@ -1,5 +1,7 @@
 <?php
 require_once('DButility.php');
+require_once('DB_reset.php');
+
 //----------Error msg-----------
 function Select_err_msg() {
 	$query_rsview = "SELECT err_msg FROM err_msg ";
@@ -185,8 +187,11 @@ function Select_casting_location() {
 }
 
 function Save_casting($data) {
-	$sql = "UPDATE global_config SET `config_str`='<font color=\'".$data['casting_color']."\'>".$data['casting_text']."</font>' ";
+	$casting_text = str_replace("'", "\'", $data['casting_text']);
+	
+	$sql = "UPDATE global_config SET `config_str`='<font color=\'".$data['casting_color']."\'>".$casting_text."</font>' ";
 	$sql .= "WHERE (module = 'casting' AND `name` = 'casting_text')";
+	//tolog("sql: ".$sql);
 	$result = mysql_query($sql);
 	if (!($result)) {
 		return false;
@@ -315,7 +320,7 @@ function Save_news($id, $data) {
 			GetSQLValueString($data['content'],"text")
 			) );
 	}
-	//echo $sql;
+	//tolog($sql);
 	$result = mysql_query($sql);
 	if (!($result)) {
 		return false;
@@ -323,7 +328,7 @@ function Save_news($id, $data) {
 	
 	if (isset($data['deleted_news_img'])) {
 	  for ($i = 0; $i <= (count($data['deleted_news_img']) - 1); $i++) {
-		$sql = "DELETE FROM news_pic WHERE ((`id` = ".$data['deleted_news_img'][$i]."))";
+		$sql = "UPDATE news_pic SET `deleted` = 1 WHERE ((`id` = ".$data['deleted_news_img'][$i]."))";
 		$result = mysql_query($sql);
 		if (!($result)) {
 			return false;
@@ -344,7 +349,7 @@ function del_news($news_id) {
 	}
 	
 	//del the news pic
-	$sql = "DELETE FROM news_pic ";
+	$sql = "UPDATE news_pic SET `deleted` = 1 ";
 	$sql .= "WHERE (news_id = '$news_id') ";
 	$result = mysql_query($sql);
 	if (!($result)) {
@@ -359,10 +364,10 @@ function Count_banner_image($id) {
 	$query_rsview = "SELECT COUNT(`id`) AS `count_item` FROM banner_image ";
 
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (!($id == -1))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
-	
+	//tolog("COUNT sql: $query_rsview");
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
 	$totalRows_rsview = mysql_num_rows($rsview);
@@ -379,11 +384,12 @@ function Select_banner_image($id) {
 	$query_rsview = "SELECT * FROM banner_image ";
 	
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (!($id == -1))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
 	$query_rsview .= "ORDER BY `id` ASC ";
+	//tolog("SELECT sql: $query_rsview");
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
 	$totalRows_rsview = mysql_num_rows($rsview);
@@ -403,11 +409,11 @@ function Select_banner_image($id) {
 
 
 function Save_banner_image($id, $data) {
+	$data_transition = explode("_", $data['transition']);
 	if ($id<>0) {
-		$sql = "UPDATE banner_image SET `transition_flow`=".GetSQLValueString($data['transition_flow'],"text").", `transition_direction`=".GetSQLValueString($data['transition_direction'],"text").", ";
+		$sql = "UPDATE banner_image SET `transition_flow`=".GetSQLValueString($data_transition[0],"text").", `transition_direction`=".GetSQLValueString($data_transition[1],"text").", ";
 		$sql .= "`am_time`=Now() ";
-		$sql .= "WHERE (id = ".GetSQLValueString($id,"int").") ";
-	}
+		$sql .= "WHERE ((`deleted` = 0) AND (id = ".GetSQLValueString($id,"int").")) ";
 	//echo $sql;
 	$result = mysql_query($sql);
 	if (!($result)) {
@@ -415,12 +421,13 @@ function Save_banner_image($id, $data) {
 	}
 
 	return true;
+	}	
 }
 
 function del_banner_images($data) {
 	if (isset($data['deleted_img'])) {
 	  for ($i = 0; $i <= (count($data['deleted_img']) - 1); $i++) {
-		$sql = "DELETE FROM banner_image WHERE ((`id` = ".$data['deleted_img'][$i]."))";
+		$sql = "UPDATE banner_image SET `deleted` = 1  WHERE ((`id` = ".$data['deleted_img'][$i]."))";
 		$result = mysql_query($sql);
 		if (!($result)) {
 			return false;
@@ -452,7 +459,7 @@ function Count_banner_video($id) {
 	$query_rsview = "SELECT COUNT(`id`) AS `count_item` FROM playlist ";
 
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (!($id == -1))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
@@ -472,11 +479,11 @@ function Select_banner_video($id) {
 	$query_rsview = "SELECT * FROM playlist ";
 	
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (!($id == -1))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
-	$query_rsview .= "ORDER BY `id` DESC ";
+	$query_rsview .= "ORDER BY `id` ASC ";
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
 	$totalRows_rsview = mysql_num_rows($rsview);
@@ -491,6 +498,8 @@ function Select_banner_video($id) {
 				$data['aspect_option'][$count] = $row_rsview['aspect_option'];
 				$data['aspect_width'][$count] = $row_rsview['aspect_width'];
 				$data['aspect_height'][$count] = $row_rsview['aspect_height'];
+				$data['video_width'][$count] = $row_rsview['video_width'];
+				$data['video_height'][$count] = $row_rsview['video_height'];
 				$count = $count + 1;
 			} while($row_rsview = mysql_fetch_assoc($rsview));
 	}
@@ -502,7 +511,7 @@ function Save_banner_video($id, $data) {
 		$sql = "UPDATE playlist SET `title`=".GetSQLValueString($data['title'],"text").", `aspect_option`=".GetSQLValueString($data['aspect_option'],"int").", ";
 		$sql .= "`aspect_width`=".GetSQLValueString($data['aspect_width'],"int").", `aspect_height`=".GetSQLValueString($data['aspect_height'],"int").", ";
 		$sql .= "`am_time`=Now() ";
-		$sql .= "WHERE (id = ".GetSQLValueString($id,"int").") ";
+		$sql .= "WHERE ((`deleted` = 0) AND (id = ".GetSQLValueString($id,"int").")) ";
 	}
 	//echo $sql;
 	$result = mysql_query($sql);
@@ -516,7 +525,7 @@ function Save_banner_video($id, $data) {
 function del_banner_video($data) {
 	if (isset($data['deleted_video'])) {
 	  for ($i = 0; $i <= (count($data['deleted_video']) - 1); $i++) {
-		$sql = "DELETE FROM playlist WHERE ((`id` = ".$data['deleted_video'][$i]."))";
+		$sql = "UPDATE playlist SET `deleted` = 1 WHERE ((`id` = ".$data['deleted_video'][$i]."))";
 		$result = mysql_query($sql);
 		if (!($result)) {
 			return false;
@@ -556,7 +565,7 @@ function Select_gallery_album($id) {
 	$query_rsview .= (!($id <= 0))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
-	$query_rsview .= "ORDER BY `title` ASC ";
+	$query_rsview .= "ORDER BY `id` ASC ";
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
 	$totalRows_rsview = mysql_num_rows($rsview);
@@ -579,7 +588,7 @@ function Select_gallery_album_cover($aid) {
 	$query_rsview = "SELECT * FROM gallery ";
 	
 	//Where case
-	$query_rsview .= "WHERE ((`as_cover` = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) AND (`as_cover` = 1) ";
 	$query_rsview .= (!($aid == -1))?" AND (aid = $aid)":"";
 	$query_rsview .= ") ";
 	
@@ -628,14 +637,14 @@ function Save_gallery_album($aid, $data) {
 function Save_gallery_album_cover($aid, $cover_img_id) {
 	//Clear all as_cover for all images to 0 firstly
 	$sql = "UPDATE gallery SET `as_cover` = 0 ";
-	$sql .= "WHERE ((aid = ".GetSQLValueString($aid,"int").")) ";
+	$sql .= "WHERE ((`deleted` = 0) AND (aid = ".GetSQLValueString($aid,"int").")) ";
 	$result = mysql_query($sql);
 	if (!($result)) {
 		return false;
 	}
 	
 	$sql = "UPDATE gallery SET `as_cover` = 1, `am_time` = Now() ";
-	$sql .= "WHERE ((aid = ".GetSQLValueString($aid,"int").") AND (id = ".$cover_img_id.")) ";
+	$sql .= "WHERE ((`deleted` = 0) AND (aid = ".GetSQLValueString($aid,"int").") AND (id = ".$cover_img_id.")) ";
 	
 	$result = mysql_query($sql);
 	if (!($result)) {
@@ -646,8 +655,8 @@ function Save_gallery_album_cover($aid, $cover_img_id) {
 
 function del_gallery_album($aid) {
 
-	//Del all photos for this album
-	$sql = "DELETE FROM gallery WHERE ((`aid` = ".$aid."))";
+	//Del all photos for this album firstly
+	$sql = "UPDATE gallery SET `deleted` = 1 WHERE ((`aid` = ".$aid."))";
 	$result = mysql_query($sql);
 	if (!($result)) {
 		return false;
@@ -667,7 +676,7 @@ function Count_gallery_photo($aid, $id) {
 	$query_rsview = "SELECT COUNT(`id`) AS `count_item` FROM gallery ";
 
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (($aid >= 0))?" AND (aid = $aid)":"";
 	$query_rsview .= (($id >= 0))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
@@ -684,16 +693,30 @@ function Count_gallery_photo($aid, $id) {
 	return $item_count;
 }
 
+function del_empty_gallery_album()  {
+	$gallery_album_count = Count_gallery_album(-1);
+	$gallery_album_data = Select_gallery_album(-1);
+	if (($gallery_album_count) > 0) {
+	  for ($i = 0; $i <= ($gallery_album_count - 1); $i++) {
+		$gallery_album_photos_count = Count_gallery_photo($gallery_album_data['id'][$i], -1);
+		if ($gallery_album_photos_count == 0) {
+			del_gallery_album($gallery_album_data['id'][$i]);
+		}
+	  }
+	}
+}
+
+
 function Select_gallery_photo($aid, $id) {
 	$query_rsview = "SELECT * FROM gallery ";
 	
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (($aid >= 0))?" AND (aid = $aid)":"";
 	$query_rsview .= (($id >= 0))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
-	$query_rsview .= "ORDER BY `title` ASC ";
+	$query_rsview .= "ORDER BY `id` ASC ";
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
 	$totalRows_rsview = mysql_num_rows($rsview);
@@ -717,7 +740,7 @@ function Save_gallery_photo($aid, $id, $data) {
 	if ($id<>0) {
 		$sql = "UPDATE gallery SET `title`=".GetSQLValueString($data['title'],"text").", `description`=".GetSQLValueString($data['description'],"text").", ";
 		$sql .= "`am_time`=Now() ";
-		$sql .= "WHERE ((aid = ".GetSQLValueString($aid,"int").") AND (id = ".GetSQLValueString($id,"int").")) ";
+		$sql .= "WHERE ((`deleted` = 0) AND (aid = ".GetSQLValueString($aid,"int").") AND (id = ".GetSQLValueString($id,"int").")) ";
 
 	//echo $sql;
 	$result = mysql_query($sql);
@@ -741,11 +764,18 @@ function Save_gallery_photo($aid, $id, $data) {
 function del_gallery_photos($aid, $data) {
 	if (isset($data['deleted_img'])) {
 	  for ($i = 0; $i <= (count($data['deleted_img']) - 1); $i++) {
-		$sql = "DELETE FROM gallery WHERE ((`aid` = $aid) AND (`id` = ".$data['deleted_img'][$i]."))";
+		$sql = "UPDATE gallery SET `deleted` = 1 WHERE ((`aid` = $aid) AND (`id` = ".$data['deleted_img'][$i]."))";
 		$result = mysql_query($sql);
 		if (!($result)) {
 			return false;
 		}
+	  }
+	  
+	  //Delete the album if there is no photo in the album
+	  if (Count_gallery_photo($aid, -1) == 0) {
+		  if (!(del_gallery_album($aid)))  {
+				return false;
+		  }
 	  }
 	}
 	return true;
@@ -757,7 +787,7 @@ function Count_movie_gallery($id) {
 	$query_rsview = "SELECT COUNT(`id`) AS `count_item` FROM movgallery ";
 
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (!($id == -1))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
@@ -777,11 +807,11 @@ function Select_movie_gallery($id) {
 	$query_rsview = "SELECT * , DATE_FORMAT(cr_time, '%W %D of %M %Y %r') AS `cr_time_long` FROM movgallery ";
 	
 	//Where case
-	$query_rsview .= "WHERE ((1 = 1) ";
+	$query_rsview .= "WHERE ((`deleted` = 0) ";
 	$query_rsview .= (!($id == -1))?" AND (id = $id)":"";
 	$query_rsview .= ") ";
 	
-	$query_rsview .= "ORDER BY `id` DESC ";
+	$query_rsview .= "ORDER BY `id` ASC ";
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
 	$totalRows_rsview = mysql_num_rows($rsview);
@@ -796,6 +826,8 @@ function Select_movie_gallery($id) {
 				$data['aspect_option'][$count] = $row_rsview['aspect_option'];
 				$data['aspect_width'][$count] = $row_rsview['aspect_width'];
 				$data['aspect_height'][$count] = $row_rsview['aspect_height'];
+				$data['video_width'][$count] = $row_rsview['video_width'];
+				$data['video_height'][$count] = $row_rsview['video_height'];
 				$data['cr_time'][$count] = $row_rsview['cr_time'];
 				$data['cr_time_long'][$count] = $row_rsview['cr_time_long'];
 				$count = $count + 1;
@@ -809,7 +841,7 @@ function Save_movie_gallery($id, $data) {
 		$sql = "UPDATE movgallery SET `title`=".GetSQLValueString($data['title'],"text").", `aspect_option`=".GetSQLValueString($data['aspect_option'],"int").", ";
 		$sql .= "`aspect_width`=".GetSQLValueString($data['aspect_width'],"int").", `aspect_height`=".GetSQLValueString($data['aspect_height'],"int").", ";
 		$sql .= "`am_time`=Now() ";
-		$sql .= "WHERE (id = ".GetSQLValueString($id,"int").") ";
+		$sql .= "WHERE ((`deleted` = 0) AND (id = ".GetSQLValueString($id,"int").")) ";
 	}
 	//echo $sql;
 	$result = mysql_query($sql);
@@ -823,7 +855,7 @@ function Save_movie_gallery($id, $data) {
 function del_movie_gallery($data) {
 	if (isset($data['deleted_video'])) {
 	  for ($i = 0; $i <= (count($data['deleted_video']) - 1); $i++) {
-		$sql = "DELETE FROM movgallery WHERE ((`id` = ".$data['deleted_video'][$i]."))";
+		$sql = "UPDATE movgallery SET `deleted` = 1 WHERE ((`id` = ".$data['deleted_video'][$i]."))";
 		$result = mysql_query($sql);
 		if (!($result)) {
 			return false;
@@ -846,6 +878,18 @@ function Select_config_title() {
 				$data['company_title'] = $row_rsview['config_str'];
 		} while($row_rsview = mysql_fetch_assoc($rsview));
 	}
+	//Color
+	$query_rsview = "SELECT config_str FROM global_config ";
+	$query_rsview .= "WHERE (`module` = 'config' AND `name` = 'config_title_color')";
+	$rsview = mysql_query($query_rsview) or die(mysql_error());
+	$row_rsview = mysql_fetch_assoc($rsview);
+	$totalRows_rsview = mysql_num_rows($rsview);
+	if ($totalRows_rsview >0 ){
+			do {
+				$data['company_title_color'] = $row_rsview['config_str'];
+		} while($row_rsview = mysql_fetch_assoc($rsview));
+	}
+	
 	//Select the Company subtitle
 	$query_rsview = "SELECT config_str FROM global_config ";
 	$query_rsview .= "WHERE (`module` = 'config' AND `name` = 'config_subtitle')";
@@ -855,6 +899,42 @@ function Select_config_title() {
 	if ($totalRows_rsview >0 ){
 			do {
 				$data['company_subtitle'] = $row_rsview['config_str'];
+		} while($row_rsview = mysql_fetch_assoc($rsview));
+	}
+	
+	//Color
+	$query_rsview = "SELECT config_str FROM global_config ";
+	$query_rsview .= "WHERE (`module` = 'config' AND `name` = 'config_subtitle_color')";
+	$rsview = mysql_query($query_rsview) or die(mysql_error());
+	$row_rsview = mysql_fetch_assoc($rsview);
+	$totalRows_rsview = mysql_num_rows($rsview);
+	if ($totalRows_rsview >0 ){
+			do {
+				$data['company_subtitle_color'] = $row_rsview['config_str'];
+		} while($row_rsview = mysql_fetch_assoc($rsview));
+	}
+
+	//Current Time Color
+	$query_rsview = "SELECT config_str FROM global_config ";
+	$query_rsview .= "WHERE (`module` = 'config' AND `name` = 'config_curr_time_color')";
+	$rsview = mysql_query($query_rsview) or die(mysql_error());
+	$row_rsview = mysql_fetch_assoc($rsview);
+	$totalRows_rsview = mysql_num_rows($rsview);
+	if ($totalRows_rsview >0 ){
+			do {
+				$data['curr_time_color'] = $row_rsview['config_str'];
+		} while($row_rsview = mysql_fetch_assoc($rsview));
+	}
+	
+	//Weather Temp Color
+	$query_rsview = "SELECT config_str FROM global_config ";
+	$query_rsview .= "WHERE (`module` = 'config' AND `name` = 'config_weather_temp_color')";
+	$rsview = mysql_query($query_rsview) or die(mysql_error());
+	$row_rsview = mysql_fetch_assoc($rsview);
+	$totalRows_rsview = mysql_num_rows($rsview);
+	if ($totalRows_rsview >0 ){
+			do {
+				$data['weather_temp_color'] = $row_rsview['config_str'];
 		} while($row_rsview = mysql_fetch_assoc($rsview));
 	}
 	
@@ -882,6 +962,14 @@ function Save_config_title($data) {
 		return false;
 	}
 	
+	//Color
+	$sql = "UPDATE global_config SET `config_str`=".GetSQLValueString($data['company_title_color'],"text")." ";
+	$sql .= "WHERE (`module` = 'config' AND `name` = 'config_title_color') ";
+	$result = mysql_query($sql);
+	if (!($result)) {
+		return false;
+	}
+	
 	//Save the Company subtitle
 	$sql = "UPDATE global_config SET `config_str`=".GetSQLValueString($data['company_subtitle'],"text")." ";
 	$sql .= "WHERE (`module` = 'config' AND `name` = 'config_subtitle') ";
@@ -889,7 +977,29 @@ function Save_config_title($data) {
 	if (!($result)) {
 		return false;
 	}
-
+	
+	//Color
+	$sql = "UPDATE global_config SET `config_str`=".GetSQLValueString($data['company_subtitle_color'],"text")." ";
+	$sql .= "WHERE (`module` = 'config' AND `name` = 'config_subtitle_color') ";
+	$result = mysql_query($sql);
+	if (!($result)) {
+		return false;
+	}
+	//Current Time Color
+	$sql = "UPDATE global_config SET `config_str`=".GetSQLValueString($data['curr_time_color'],"text")." ";
+	$sql .= "WHERE (`module` = 'config' AND `name` = 'config_curr_time_color') ";
+	$result = mysql_query($sql);
+	if (!($result)) {
+		return false;
+	}
+	
+	//Weather temp Color
+	$sql = "UPDATE global_config SET `config_str`=".GetSQLValueString($data['weather_temp_color'],"text")." ";
+	$sql .= "WHERE (`module` = 'config' AND `name` = 'config_weather_temp_color') ";
+	$result = mysql_query($sql);
+	if (!($result)) {
+		return false;
+	}
 	//Save the Banner Type
 	$sql = "UPDATE global_config SET `config_str`=".GetSQLValueString($data['banner_type'],"text")." ";
 	$sql .= "WHERE (`module` = 'config' AND `name` = 'config_banner_type') ";
@@ -931,29 +1041,44 @@ function Count_images($subject, $image_id, $id2) {
 		case "news":
 				$select_case = "SELECT COUNT(`id`) AS `count_item` FROM `news_pic` ";
 			break;
+		case "banner_image":
+				$select_case = "SELECT COUNT(`id`) AS `count_item` FROM `banner_image` ";
+			break;		
 	}
 	//Where Case
+	$where_case .= "WHERE ((1=1) ";
 	switch ($subject) {
 		case "logo":
-				$where_case = "WHERE ((module = 'config') AND (name = 'config_icon')) ";
+				$where_case .= "AND (module = 'config') AND (name = 'config_icon') ";
 			break;
 		case "bg":
-				$where_case = "WHERE ((module = 'config') AND (name = 'config_background')) ";
+				$where_case .= "AND (module = 'config') AND (name = 'config_background') ";
 			break;
 		case "about_us":
-				$where_case = "WHERE ((module = 'about_us') AND (name = 'about_us_img')) ";
-			break;	
+				$where_case .= "AND (module = 'about_us') AND (name = 'about_us_img') ";
+			break;
+		case "banner_image":
+			$where_case .= "AND (deleted = 0) ";
+				if (!($image_id == -1)) {
+					$where_case .= "AND (id = '$image_id') ";
+				}
+			break;		
 		case "menu_icons":
 				if (!($image_id == -1)) {
-					$where_case = "WHERE ((id = '$image_id')) ";
+					$where_case .= "AND (id = '$image_id') ";
 				}
 			break;
 		case "news":
-				if (!($id2 == -1)) {
-					$where_case = "WHERE ((news_id = '$id2')) ";
+			$where_case .= "AND (deleted = 0) ";
+				if (($id2 > 0)) {
+					$where_case .= "AND (news_id = '$id2') ";
+				}
+				if (($image_id > 0)) {
+					$where_case .= "AND (id = $image_id) ";
 				}
 			break;
 	}
+	$where_case .= ") ";
 	$query_rsview = $select_case." ".$where_case;
 	$rsview = mysql_query($query_rsview) or die(mysql_error());
 	$row_rsview = mysql_fetch_assoc($rsview);
@@ -984,38 +1109,44 @@ function Select_images($subject, $image_id, $id2) {
 		case "news":
 				$select_case = "SELECT * FROM `news_pic` ";
 			break;
+		case "banner_image":
+				$select_case = "SELECT * FROM `banner_image` ";
+			break;			
 	}
 	//Where Case
+	$where_case .= "WHERE ((1=1) ";
 	switch ($subject) {
 		case "logo":
-				$where_case = "WHERE ((module = 'config') AND (name = 'config_icon')) ";
+				$where_case .= "AND (module = 'config') AND (name = 'config_icon') ";
 			break;
 		case "bg":
-				$where_case = "WHERE ((module = 'config') AND (name = 'config_background')) ";
+				$where_case .= "AND (module = 'config') AND (name = 'config_background') ";
 			break;
 		case "about_us":
-				$where_case = "WHERE ((module = 'about_us') AND (name = 'about_us_img') ";
-				if (($image_id > 0)) {
-					$where_case .= " AND (id = $image_id) ";
-				}
-				$where_case .= ") ";
+				$where_case .= "AND (module = 'about_us') AND (name = 'about_us_img') ";
 			break;
+		case "banner_image":
+			$where_case .= "AND (deleted = 0) ";
+				if (!($image_id == -1)) {
+					$where_case .= "AND (id = '$image_id') ";
+				}
+			break;		
 		case "menu_icons":
 				if (!($image_id == -1)) {
-					$where_case = "WHERE ((id = $image_id)) ";
+					$where_case .= "AND (id = '$image_id') ";
 				}
 			break;
 		case "news":
-				$where_case = "WHERE ((1 = 1) ";
+			$where_case .= "AND (deleted = 0) ";
 				if (($id2 > 0)) {
-					$where_case .= "AND (news_id = $id2) ";
+					$where_case .= "AND (news_id = '$id2') ";
 				}
 				if (($image_id > 0)) {
 					$where_case .= "AND (id = $image_id) ";
 				}
-				$where_case .= ") ";
 			break;
 	}
+	$where_case .= ") ";
 	
 	//Order Case
 	switch ($subject) {
@@ -1088,7 +1219,15 @@ function Select_images($subject, $image_id, $id2) {
 					$data['id'][$count] = $row_rsview['id'];
 					if (!($row_rsview['file'] == "")) {
 						$data['no_image'][$count] = false;
+						$data['id'][$count] = $row_rsview['id'];
 						$data['image'][$count] = $row_rsview['file'];
+					}
+					break;
+				case "banner_image":
+					$data['id'][$count] = $row_rsview['id'];
+					if (!($row_rsview['filename'] == "")) {
+						$data['no_image'][$count] = false;
+						$data['image'][$count] = $row_rsview['filename'];
 					}
 					break;
 			}
@@ -1103,6 +1242,7 @@ function Select_images($subject, $image_id, $id2) {
 function Update_images($subject, $image_id, $image_file_name, $org_file_name, $id2) {
 	$cmd = "";
 	$where_case = "";
+	$org_file_name = str_replace("'", "`", $org_file_name);
 	$org_file_name = mb_substr($org_file_name, 0, 12, 'UTF-8');	
 	//Insert Cmd OR Update Cmd
 	switch ($subject) {
@@ -1164,7 +1304,7 @@ function Update_images($subject, $image_id, $image_file_name, $org_file_name, $i
 //**Delete Image**
 //Clear the file name in the DB only
 
-function del_image($subject, $image_id) {
+function del_image($subject, $image_id)  {
 	$cmd = "";
 	$where_case = "";
 	//Insert Cmd OR Update Cmd
@@ -1178,10 +1318,10 @@ function del_image($subject, $image_id) {
 				$cmd = "UPDATE config_menu SET `background`='', `label`='', `am_time`=null ";
 			break;
 		case "news":
-				$cmd = "DELETE FROM news_pic ";
+				$cmd = "UPDATE news_pic SET `deleted` = 1 ";
 			break;
 		case "banner_image":
-				$cmd = "DELETE FROM banner_image ";
+				$cmd = "UPDATE banner_image SET `deleted` = 1 ";
 			break;
 	}
 	//Where Case
@@ -1223,15 +1363,16 @@ function del_image($subject, $image_id) {
 
 
 //***Upload Videos***
-function Update_videos($subject, $video_id, $org_file_name, $video_file_name, $thumb_file_name, $id2) {
+function Update_videos($subject, $video_id, $org_file_name, $video_file_name, $thumb_file_name, $id2, $video_width, $video_height) {
 	$cmd = "";
 	$where_case = "";
 	//Insert Cmd OR Update Cmd
+	$org_file_name = str_replace("'", "`", $org_file_name);
 	$org_file_name = mb_substr($org_file_name, 0, 12, 'UTF-8');	
 	
 	switch ($subject) {
 		case "banner_video":
-				$cmd = "INSERT INTO playlist (`title`, `link`, `thumb`, `cr_time`) Values('$org_file_name', ".GetSQLValueString($video_file_name,"text").", ".GetSQLValueString($thumb_file_name,"text").", Now()) ";
+				$cmd = "INSERT INTO playlist (`title`, `link`, `thumb`, `cr_time`, `video_width`,`video_height`) Values('$org_file_name', ".GetSQLValueString($video_file_name,"text").", ".GetSQLValueString($thumb_file_name,"text").", Now(), $video_width, $video_height) ";
 			break;
 		case "movie_gallery":
 				$cmd = "INSERT INTO movgallery (`title`, `link`, `thumb`, `cr_time`) Values('$org_file_name', ".GetSQLValueString($video_file_name,"text").", ".GetSQLValueString($thumb_file_name,"text").", Now()) ";
@@ -1253,4 +1394,173 @@ function Update_videos($subject, $video_id, $org_file_name, $video_file_name, $t
 	
 	return true;
 }
+
+//******Deleted medias********
+
+function Count_deleted_medias($subject) {
+	$select_case = "SELECT count(`id`) AS `count_item` FROM ";
+	$where_case = "";
+
+	//Select Case
+	switch ($subject) {
+		case "news":
+				$select_case .= "`news_pic` ";
+			break;
+		case "banner_image":
+				$select_case .= "`banner_image` ";
+			break;			
+		case "banner_video":
+				$select_case .= "`playlist` ";
+			break;		
+		case "gallery":
+				$select_case .= "`gallery` ";
+			break;	
+		case "movie_gallery":
+				$select_case .= "`movgallery` ";
+			break;				
+	}
+	//Where Case
+	$where_case .= "WHERE ((`deleted`=1) ";
+	$where_case .= ") ";
+	
+	$query_rsview = $select_case." ".$where_case;
+    tolog($query_rsview);
+	
+	$item_count = 0;
+	$rsview = mysql_query($query_rsview) or die(mysql_error());
+	$row_rsview = mysql_fetch_assoc($rsview);
+	$totalRows_rsview = mysql_num_rows($rsview);
+	
+	if ($totalRows_rsview >0 ){
+			do {
+				$item_count = $row_rsview['count_item'];
+			} while($row_rsview = mysql_fetch_assoc($rsview));
+	}
+	return $item_count;
+}
+
+
+function Select_deleted_medias($subject) {
+	$select_case = "";
+	$where_case = "";
+	$order_case = "";
+	//Select Case
+	switch ($subject) {
+		case "news":
+				$select_case = "SELECT * FROM `news_pic` ";
+			break;
+		case "banner_image":
+				$select_case = "SELECT * FROM `banner_image` ";
+			break;			
+		case "banner_video":
+				$select_case = "SELECT * FROM `playlist` ";
+			break;		
+		case "gallery":
+				$select_case = "SELECT * FROM `gallery` ";
+			break;	
+		case "movie_gallery":
+				$select_case = "SELECT * FROM `movgallery` ";
+			break;				
+	}
+	//Where Case
+	$where_case .= "WHERE ((`deleted`=1) ";
+	$where_case .= ") ";
+	
+	//Order Case
+	$order_case .= "ORDER BY `id` ASC";
+	
+	$query_rsview = $select_case." ".$where_case." ".$order_case;
+    //echo $query_rsview;
+	
+	$count = 0;
+	$data= null;	
+	If (!($query_rsview == "")) {
+		$rsview = mysql_query($query_rsview) or die(mysql_error());
+		$row_rsview = mysql_fetch_assoc($rsview);
+		$totalRows_rsview = mysql_num_rows($rsview);
+		
+		$data['image'][$count] = "";
+		$data['video'][$count] = "";
+		
+		if ($totalRows_rsview >0 ){
+		
+			do {
+				$data['image'][$count] = "";
+				$data['video'][$count] = "";
+				$data['id'][$count] = $row_rsview['id'];				
+			switch ($subject) {
+				case "news":
+					if (!($row_rsview['file'] == "")) {
+						$data['image'][$count] = $row_rsview['file'];
+					}
+					break;
+				case "banner_image":
+					if (!($row_rsview['filename'] == "")) {
+						$data['image'][$count] = $row_rsview['filename'];
+					}
+					break;
+				case "banner_video":
+					if (!($row_rsview['link'] == "")) {
+						$data['image'][$count] = $row_rsview['thumb'];
+						$data['video'][$count] = $row_rsview['link'];
+					}
+					break;
+				case "gallery":
+					if (!($row_rsview['big'] == "")) {
+						$data['image'][$count] = $row_rsview['big'];
+					}
+					break;	
+				case "movie_gallery":
+					if (!($row_rsview['link'] == "")) {
+						$data['image'][$count] = $row_rsview['thumb'];
+						$data['video'][$count] = $row_rsview['link'];
+					}
+					break;	
+			}
+			$count = $count + 1;
+			} while($row_rsview = mysql_fetch_assoc($rsview));
+		}
+	  }
+	return $data;
+}
+
+function Permanent_delete_medias($subject) {
+	$cmd = "";
+	$where_case = "";
+
+	switch ($subject) {
+		case "news":
+				$cmd = "DELETE FROM `news_pic` ";
+			break;
+		case "banner_image":
+				$cmd = "DELETE FROM `banner_image` ";
+			break;			
+		case "banner_video":
+				$cmd = "DELETE FROM `playlist` ";
+			break;		
+		case "gallery":
+				$cmd = "DELETE FROM `gallery` ";
+			break;	
+		case "movie_gallery":
+				$cmd = "DELETE FROM `movgallery` ";
+			break;				
+	}
+	
+	//Where Case
+	$where_case .= "WHERE ( (`deleted` = 1) ) ";
+	/* switch ($subject) {
+		case "":
+				$where_case .= "";
+			break;
+	}  */
+	$sql = $cmd." ".$where_case;
+	//echo $sql;
+	$result = mysql_query($sql);
+	if (!($result)) {
+		return false;
+	}
+	
+	return true;
+}
+
 ?>

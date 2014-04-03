@@ -23,7 +23,7 @@ function setFocus(){
   var elements = form.elements;
   for (var i=0;i<elements.length;i++){
     var element = elements[i];
-    if(element.type == 'text' &&
+    if(((element.type == 'text') || (element.type == 'textarea')) &&
       !element.readOnly &&
       !element.disabled){
       element.focus();

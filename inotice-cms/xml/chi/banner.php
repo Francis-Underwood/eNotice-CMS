@@ -19,11 +19,15 @@ echo "<photos>\n";
 echo "<config ".$config_text."></config> \n";
 
 for ($i = 0; $i <= ($banner_image_count - 1); $i++) {
+
+  if ( file_exists("../".$config_data['folder']."/".$banner_image_data['image'][$i]) ) {
 	echo "<photo>\n";
 	echo "	<id>".$banner_image_data['id'][$i]."</id> \n";
 	echo "	<filename>".$banner_image_data['image'][$i]."</filename> \n";
 	echo "	<transition flow=\"".$banner_image_data['transition_flow'][$i]."\" direction=\"".$banner_image_data['transition_direction'][$i]."\"></transition> \n";
 	echo "</photo>\n";
+  }
+
 }  
 echo "</photos>\n";
 ?>

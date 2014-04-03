@@ -1,0 +1,1 @@
+<?php$img = imagecreatetruecolor(100, 100);//   127 is fully tranparent, 0 would be solid red, 63 would be 50% transparent :)$background = imagecolorallocatealpha($img, 255, 0, 0, 110);imagealphablending($img, false);imagesavealpha($img, true); imagefill($img, 1, 1, $background);header('Content-type: image/png');imagepng($img);imagedestroy($img);?>

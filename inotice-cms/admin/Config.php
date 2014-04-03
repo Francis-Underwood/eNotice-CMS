@@ -1,36 +1,49 @@
 <?php
-	/* system vars */
-	$Config['SystemName'] = 'eNotice System';
-	$Config['Version'] = '2.0.1';
-	$Config['display_name'] = $_SESSION['user']['display_name'];
-	//$Config['display_name'] = 'ADMINISTRATOR';
+/* system vars */
+$Config['SystemName'] = 'eNotice System';
+$Config['Version'] = 'v2.0.4';
+$Config['display_name'] = $_SESSION['user']['display_name'];
+//$Config['display_name'] = 'ADMINISTRATOR';
 
 
 	
-	/* temporary folder for uploading */
-	$Config['TemporaryUploadPath'] = 'upload/';
-	
-	/* data&files paths */
-	$Config['SyncRoot'] = 'daily/';
-	$Config['nonSyncRoot'] = 'local/';
-	
-	$Config['Subpath.Media'] = 'MediaFiles/';
-	$Config['Subpath.FloorPlan'] = 'assets/floorplan/';
-	$Config['Subpath.Background'] = 'assets/background/';
-	//$Config['Subpath.CompanyLogo'] = 'assets/logo/';
-	$Config['Subpath.Theme'] = $Config['SyncRoot'];
-	
-	$Config['AdvImagesPath'] = $Config['nonSyncRoot'] . $Config['Subpath.Media'];
-	$Config['AdvVideosPath'] = $Config['SyncRoot'] . $Config['Subpath.Media'];
-	$Config['FloorPlanPath'] = $Config['SyncRoot'] . $Config['Subpath.FloorPlan'];
-	$Config['BackgroundPath'] = $Config['SyncRoot'] . $Config['Subpath.Background'];
-	$Config['ThemePath'] = $Config['Subpath.Theme'];
+/* data&files paths */
+$Config['logo_folder'] = "../images/logo";
+$Config['bg_folder'] = "../images/background";
+$Config['menu_icons_folder'] = "../images/menu";
+$Config['news_folder'] = "../images/news/photos";
+$Config['about_us_folder'] = "../images/portfolio";
+$Config['banner_image_folder'] = "../images/banner";
+$Config['banner_video_folder'] = "../videos";
+$Config['gallery_folder'] = "../images/gallery";
+$Config['movie_gallery_folder'] = "../movgallery";
 
-	/* image dimensions 
-	$Config['View']['CompanyLogoWidth'] = 120;
-	$Config['View']['CompanyLogoHeight'] = 120;
-	$Config['View']['AdvImageWidth'] = 320;
-	$Config['View']['AdvImageHeight'] = 240;     */
 
-	error_reporting(E_ERROR);	
+////////////////////////Database connection//////////////////////////
+
+$DBHost = "localhost";
+//$DBName = "inot-".$Config['Version'];
+$DBName = "inotice.2.0.4";
+$DBUser = "root";
+$DBPass = "";
+
+
+$sqlzonehour = 0;
+$zonehour = 0;
+date_default_timezone_set("Asia/Brunei");
+
+$db_connection = mysql_connect ($DBHost, $DBUser, $DBPass) OR die (mysql_error());  
+$db_select = mysql_select_db ($DBName) or die (mysql_error());
+
+mysql_query("SET `time_zone` = '".date('P')."'");
+mysql_query("SET NAMES 'utf8'");
+mysql_query("SET CHARACTER_SET_CLIENT=utf8");
+mysql_query("SET CHARACTER_SET_RESULTS=utf8");
+
+///////////////////End of Database connection////////////////////////
+
+
+error_reporting(E_ERROR);
+	
 ?>
+

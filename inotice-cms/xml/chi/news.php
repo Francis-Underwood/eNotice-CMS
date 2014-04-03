@@ -24,7 +24,7 @@ echo "<news>\n";
 			echo "		<date>".$news_data['xdate_str'][$i]."</date>\n";
 			echo "		<title>".$news_data['title'][$i]."</title>\n";
 			echo "		<summary>".nl2br($news_data['summary'][$i])."</summary>\n";
-			echo "		<content><![CDATA[".nl2br($news_data['content'][$i])."]]></content>\n";
+			echo "		<content><![CDATA[".to_normal_size($news_data['content'][$i])."]]></content>\n";
 			echo "	</item>\n";
 		}
 	}
