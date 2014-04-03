@@ -1,0 +1,34 @@
+9
+
+dir
+53
+svn://192.168.0.7/enotice/admin/jquery-ui-1.8.10.custom/development-bundle/themes
+svn://192.168.0.7/enotice
+
+
+
+2011-04-19T06:20:04.186624Z
+1
+grace
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+f8a0518d-c4e7-f546-ac71-5481789ece46
+
+base
+dir
+
+ui-lightness
+dir
+

@@ -1,0 +1,278 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html><head><title>Calander - Add Event</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="google-site-verification" content="mYGWHnnpZacjiZl03LaX77t2ts9c0PJKD_HXbH4idAQ" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" /> 
+<META name="y_key" content="560a63b9b5b9156a">
+<meta name="msvalidate.01" content="C08EB54E2744BAFA0611F346BC8CC23A" />
+<link href="../style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+
+<!--
+body {
+background-color: #BBD2C0;
+font-size: 10px;
+}
+
+.style4 {
+color: #63676E;
+font-weight: bold;
+}
+
+.style5 {color: #FFFFFF}
+.post11 {	border-top-style: solid;
+border-right-style: none;
+border-bottom-style: solid;
+border-left-style: none;
+padding-top: 5px;
+padding-bottom: 5px;
+border-bottom-width: 1px;
+border-bottom-color: #63676E;
+
+}
+.style6 {	font-size: x-small
+}
+
+-->
+
+</style>
+
+<script language='javascript' type="text/javascript">
+   // function parameters are: field - the string field, count - the field for remaining
+   // characters  number and max - the maximum number of characters  
+ 	function CountLeft(field, count, max) {
+	// if the length of the string in the input field is greater than the max value, trim it 
+ 	if (field.value.length > max)
+ 	field.value = field.value.substring(0, max);
+	 else
+ 	// calculate the remaining characters  
+ 	count.value = max - field.value.length;
+ 	}
+	
+	function validation(form1) {
+		title = document.form1.title.value;
+		description = document.form1.description.value;
+		err_msg = "Below item(s) cannot be blanked :\n";
+							
+		if (title.length == 0) {
+			err_msg = err_msg + "\n- [ Title ]";
+		}		
+		if (description.length == 0) {
+			err_msg = err_msg + "\n- [ Description ]";
+		}
+		
+		if (err_msg.length > 34) {
+			alert(err_msg);
+			return false;
+		}	
+		return true;
+	}
+	
+ </script>
+
+</head>
+
+<body link="#000000" vlink="#000000" alink="#000000">
+<table width="300" border="0" align="center" cellpadding="5" cellspacing="0">
+<tr>
+<td bgcolor="#96BFF0">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="a01">
+<tr>
+<td height="50" class="a01 style5"><b>
+<font color="#FFFFFF" size="4" >
+<font face="Arial, Helvetica, sans-serif">Add Event</font><br>¥[¤J<br>
+</font></b></td>
+</tr>
+</table></td>
+
+</tr>
+<tr bgcolor="#FFFFFF">
+<td>
+
+<form name="form1" method="post" action="" onSubmit="return validation(this)">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="post11">
+<tr>
+<td colspan="2" align="left" valign="top" nowrap="nowrap"><b><font size="+1">Add Event</font></b></td>
+</tr>
+<tr>
+
+<td align="left" valign="top" nowrap="nowrap">Event Date:</td>
+<td align="left" valign="top">
+	  	<select name="month" id="month">
+	  					<option value="1 " >01</option>
+						<option value="2 " >02</option>
+						<option value="3 " >03</option>
+						<option value="4 " >04</option>
+						<option value="5 " >05</option>
+						<option value="6 " >06</option>
+						<option value="7 " selected>07</option>
+						<option value="8 " >08</option>
+						<option value="9 " >09</option>
+									<option value="10 " >10</option>
+						<option value="11 " >11</option>
+						<option value="12 " >12</option>
+						
+        </select> <select name="day" id="day">
+		  			<option value="1 " >01</option>
+						<option value="2 " >02</option>
+						<option value="3 " >03</option>
+						<option value="4 " >04</option>
+						<option value="5 " >05</option>
+						<option value="6 " >06</option>
+						<option value="7 " >07</option>
+						<option value="8 " >08</option>
+						<option value="9 " >09</option>
+									<option value="10 " >10</option>
+						<option value="11 " >11</option>
+						<option value="12 " >12</option>
+						<option value="13 " selected>13</option>
+						<option value="14 " >14</option>
+						<option value="15 " >15</option>
+						<option value="16 " >16</option>
+						<option value="17 " >17</option>
+						<option value="18 " >18</option>
+						<option value="19 " >19</option>
+						<option value="20 " >20</option>
+						<option value="21 " >21</option>
+						<option value="22 " >22</option>
+						<option value="23 " >23</option>
+						<option value="24 " >24</option>
+						<option value="25 " >25</option>
+						<option value="26 " >26</option>
+						<option value="27 " >27</option>
+						<option value="28 " >28</option>
+						<option value="29 " >29</option>
+						<option value="30 " >30</option>
+						<option value="31 " >31</option>
+			        </select> 
+		
+		<select name="year" id="year">
+					<option value="1994 " >1994</option>
+						<option value="1995 " >1995</option>
+						<option value="1996 " >1996</option>
+						<option value="1997 " >1997</option>
+						<option value="1998 " >1998</option>
+						<option value="1999 " >1999</option>
+						<option value="2000 " >2000</option>
+						<option value="2001 " >2001</option>
+						<option value="2002 " >2002</option>
+						<option value="2003 " >2003</option>
+						<option value="2004 " >2004</option>
+						<option value="2005 " >2005</option>
+						<option value="2006 " >2006</option>
+						<option value="2007 " >2007</option>
+						<option value="2008 " >2008</option>
+						<option value="2009 " >2009</option>
+						<option value="2010 " >2010</option>
+						<option value="2011 " >2011</option>
+						<option value="2012 " selected>2012</option>
+						<option value="2013 " >2013</option>
+						<option value="2014 " >2014</option>
+						<option value="2015 " >2015</option>
+			        </select> 
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left" valign="top" nowrap="nowrap">Event Time:</td>
+
+<td align="left" valign="top">
+		<select name="hour" id="hour">
+		<option value="00" >00</option><option value="01" >01</option><option value="02" >02</option><option value="03" >03</option><option value="04" >04</option><option value="05" >05</option><option value="06" >06</option><option value="07" >07</option><option value="08" >08</option><option value="09" selected>09</option><option value="10" >10</option><option value="11" >11</option><option value="12" >12</option><option value="13" >13</option><option value="14" >14</option><option value="15" >15</option><option value="16" >16</option><option value="17" >17</option><option value="18" >18</option><option value="19" >19</option><option value="20" >20</option><option value="21" >21</option><option value="22" >22</option><option value="23" >23</option>        </select>
+        : 
+		<select name="minute" id="minute">
+		<option value="00" selected>00</option><option value="05">05</option><option value="10" >10</option><option value="15" >15</option><option value="20" >20</option><option value="25" >25</option><option value="30" >30</option><option value="35" >35</option><option value="40" >40</option><option value="45" >45</option><option value="50" >50</option><option value="55" >55</option>        </select>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left" valign="top" nowrap="nowrap">Title:</td>
+
+<td align="left" valign="top">
+	     <input name="title" type="text" id="title" size="24" maxlength="28"
+	    onKeyDown="CountLeft(this.form.title,this.form.left,28);" 
+  		onKeyUp="CountLeft(this.form.title,this.form.left,28);">
+		 <input readonly type="text" name="left" size=2 maxlength=2> </td>
+</tr>
+
+<tr>
+
+  <td align="left" valign="top" nowrap="nowrap">Description:</td>
+
+  <td align="left" valign="top"><textarea name="description" cols="24" rows="5" id="description"></textarea></td>
+
+</tr>
+
+<tr>
+
+<td align="left" valign="top"></td>
+
+<td align="left" valign="top"><input name="submit" type="submit" id="submit" value="Add Event">&nbsp;&nbsp;&nbsp;
+
+<input type="reset" name="Reset" id="button" value="Reset" />
+
+<br>
+
+<span class="style6">...</span><br>        </td>
+
+</tr>
+
+</table>
+
+</form>
+
+
+</p>
+
+<p align="center"><!--<a href="#">&gt;&gt;Main Page&lt;&lt;</a>-->
+
+
+</td>
+
+</tr>
+
+
+<tr bgcolor="#000000">
+
+<td height="20" bgcolor="#96BFF0"><font size="2">
+
+
+
+</font>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="a01">
+
+<tr>
+
+<td height="21" class="a01"><span class="style4"><font size="2" face="Arial, Helvetica, sans-serif"> 
+&copy;2012</font></span></td>
+
+<td width="20" bgcolor="#63676E" class="a01">&nbsp;</td>
+
+<td width="20" bgcolor="#AB9856" class="a01">&nbsp;</td>
+
+<td width="20" bgcolor="#E0DBAF" class="a01">&nbsp;</td>
+
+<td width="20" bgcolor="#229FC3" class="a01">&nbsp;</td>
+
+<td width="20" bgcolor="#20718A" class="a01">&nbsp;</td>
+
+<td width="20" bgcolor="#95C7CD" class="a01">&nbsp;</td>
+
+</tr></table></td></tr>
+
+</table>
+
+</body>
+</noscript>
+<div style="text-align: center;"><div style="position:relative; top:0; margin-right:auto;margin-left:auto; z-index:99999">
+<!-- Hosting24 Analytics Code --> <script type="text/javascript" language="javascript" src="http://stats.hosting24.com/do.php"></script> <noscript> <a href="http://www.hosting24.com/" target="_blank"><img src="http://stats.hosting24.com/do.php" alt="web hosting" border="0"></a> </noscript> <!-- End of Website Analytics Code -->
+</div></div>
+
+</html>

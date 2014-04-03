@@ -1,0 +1,17 @@
+
+.cell_2color {
+	width:600px;
+	height:0px;
+	background-color:#FFFFFF;
+	padding:10px 8px 6px; 
+	border: 0px solid #000; 
+	margin-bottom:10px;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#b8c4cb,endColorStr=#f6f6f8);/*IE6*/
+	background:-moz-linear-gradient(top,#b8c4cb,#f6f6f8);/*IE6*/
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#9B9F9B));/*IE6*/
+	color: #2B7C98;	
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	text-decoration: none;
+}
