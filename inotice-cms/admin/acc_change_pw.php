@@ -24,5 +24,5 @@
 	}
 
 	//Views Template("acc_change_pw");
-	require_once('views/acc_change_pw.php');
+	require_once('views/acc_change_pw.tmp.php');
 ?>

@@ -11,5 +11,5 @@
 	}
 	
 	//Views Template("acc_main");
-	require_once('views/acc_main.php');
+	require_once('views/acc_main.tmp.php');
 ?>

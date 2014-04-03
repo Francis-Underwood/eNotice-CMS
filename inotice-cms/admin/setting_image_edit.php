@@ -7,7 +7,19 @@ $tip_msg = "";
 if (isset($_GET['subject']))   {
 	$subject = ($_GET['subject']);
 	$id = ((isset($_REQUEST['id']))?($_REQUEST['id']):(-1));
-
+	/* $top = "";
+	switch ($subject) {
+		case "logo":
+		case "bg":
+			$top = "bg";
+			break;
+		case "menu_icons":
+			$top = "menu";
+			break;
+	}
+	$up_page = "main.php?page=setting_main&top=$top";   */
+	$up_page = "main.php?page=setting_main&subject=$subject";
+	
 	//Undo crop Image
 	IF ((isset($_GET['action'])) && (($_GET['action']) == "undo_img") && (isset($_GET['subject'])) && (!(isset($_POST['submit']))) )
 	{
@@ -39,7 +51,7 @@ if (isset($_GET['subject']))   {
 		}
 	  }
 	}
-	else Save_err_msg("");
+	//else Save_err_msg("");
 		
 	$error_msg2 = Select_err_msg();
 
@@ -47,6 +59,6 @@ if (isset($_GET['subject']))   {
 	$image_data = Select_images($subject,$id,0);
 	
 	//Views Template("setting_image_edit");
-	require_once('views/setting_image_edit.php');
+	require_once('views/setting_image_edit.tmp.php');
 }
 ?>

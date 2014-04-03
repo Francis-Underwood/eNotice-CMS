@@ -1,4 +1,4 @@
 <?php
 	//Views Template("page");
-	require_once('views/page.php');
+	require_once('views/page.tmp.php');
 ?>

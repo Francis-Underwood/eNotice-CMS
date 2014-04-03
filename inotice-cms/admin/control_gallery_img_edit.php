@@ -20,10 +20,11 @@
 			$error_msg = "Saved failed!!!"; 
 		  }
 	}
+	$gallery_album_data = Select_gallery_album($aid);
 	
 	$gallery_photo_count = Count_gallery_photo($aid, $id);
 	$gallery_photo_data = Select_gallery_photo($aid, $id);
 
 	//Views Template("control_gallery_img_edit");
-	require_once('views/control_gallery_img_edit.php');
+	require_once('views/control_gallery_img_edit.tmp.php');
 } ?>

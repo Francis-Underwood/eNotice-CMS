@@ -21,7 +21,7 @@
 			<td><a href="casting.php">casting.php</a></td>
 		</tr>
 		<tr>
-			<td>Systme Config</td>
+			<td>System Config</td>
 			<td><a href="config.php">config.php</a></td>
 		</tr>
 		<tr>

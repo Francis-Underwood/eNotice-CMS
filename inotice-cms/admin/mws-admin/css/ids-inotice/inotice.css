@@ -1,0 +1,63 @@
+/**********************************
+ *
+ * Add-ons for iNotice CMS
+ *
+ *********************************/
+
+span.ids-vince-right-header-span {
+	float: right; 
+	display: inline;
+}
+
+div.ids-vince-img-wrapper {
+	-moz-box-shadow: 3px 3px 4px #888;
+	-webkit-box-shadow: 3px 3px 4px #888;
+	box-shadow: 3px 3px 4px #888;
+}
+
+div.ids-vince-gallery-item {
+	width: 250px;
+	height: 200px;
+	padding: 10px;
+	float: left;
+}
+
+div.ids-vince-gallery-item-control {
+	margin-top: 10px;
+}
+
+div.ids-vince-gallery-item-control span.ids-vince-input-right {
+	float: right;
+}
+
+/* image gallery edit page */
+ul#mws-gallery li .mws-gallery-overlay .ids-vince-action-bar
+{
+	width:82px;
+	height:26px;
+	display:block;
+	position:absolute;
+	top:50%; left:15%;
+	margin-left:-6px;
+	margin-top:-16px;
+	
+	background:#323232;
+	
+	/* CSS 3 */
+	
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	-o-border-radius:4px;
+	-khtml-border-radius:4px;	
+	border-radius:4px;		
+}
+
+span.ids-vince-action-bar-button {
+	width:24px; 
+	height:24px; 
+}
+
+
+div#mws-footer a.ids-vince-footer img.ids-vince-logo {
+	vertical-align: bottom;
+}

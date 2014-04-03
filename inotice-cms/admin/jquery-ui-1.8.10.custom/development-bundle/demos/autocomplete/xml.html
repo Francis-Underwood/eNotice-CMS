@@ -31,6 +31,7 @@
 						id: $( "geonameId", this ).text()
 					};
 				}).get();
+				
 				$( "#birds" ).autocomplete({
 					source: data,
 					minLength: 0,
@@ -51,12 +52,12 @@
 
 <div class="ui-widget">
 	<label for="birds">London matches: </label>
-	<input id="birds" />
+	<input id="birds"  style="width: 600px; "/>
 </div>
 
 <div class="ui-widget" style="margin-top:2em; font-family:Arial">
 	Result:
-	<div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+	<div id="log" style="height: 200px; width: 800px; overflow: auto;" class="ui-widget-content"></div>
 </div>
 
 </div><!-- End demo -->

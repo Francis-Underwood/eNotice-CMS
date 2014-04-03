@@ -1,6 +1,6 @@
 <?php
-require_once('app.php');
+require_once('includes/app.inc.php');
 
 //Views Template("login");
-require_once('views/login.php');
+require_once('views/login.tmp.php');
 ?>

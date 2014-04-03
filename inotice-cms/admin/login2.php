@@ -1,5 +1,5 @@
 <?php
-require_once('app.php');
+require_once('includes/app.inc.php');
 
 if(isset($_SESSION['user'])) 
 {

@@ -39,5 +39,5 @@
 	$banner_image_data = Select_banner_image($id);
 	
 	//Views Template("control_banner_img_edit");
-	require_once('views/control_banner_img_edit.php');
+	require_once('views/control_banner_img_edit.tmp.php');
 } ?>

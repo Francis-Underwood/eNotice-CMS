@@ -1,7 +1,7 @@
 <?php
-require_once('app.php');
+require_once('includes/app.inc.php');
 RequireLogin();
 
 //Views Template("main");
-require_once('views/main.php');
+require_once('views/main.tmp.php');
 ?>

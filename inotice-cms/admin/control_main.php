@@ -13,7 +13,7 @@
 		$control_page_title = "Cover Banner Video Config Edit";
 			break;
 		case "control_casting":
-		$control_page_title = "Banner Casting";
+		$control_page_title = "Narrow Casting";
 			break;
 		case "control_about_us":
 		$control_page_title = "About Us";
@@ -48,5 +48,5 @@
 	}
 
 	//Views Template("control_main");
-	require_once('views/control_main.php');
+	require_once('views/control_main.tmp.php');
 ?>

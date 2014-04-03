@@ -25,5 +25,5 @@ $tip_msg = "";
 	$banner_video_data = Select_banner_video($id);
 	
 	//Views Template("control_banner_video_edit");
-	require_once('views/control_banner_video_edit.php');
+	require_once('views/control_banner_video_edit.tmp.php');
 } ?>

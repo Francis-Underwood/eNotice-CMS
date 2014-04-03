@@ -88,7 +88,7 @@ function displayCharCounts(element)
 	if(remaining >= 0)
 	{
 		limitLabel.style.color = 'green';
-		limitLabel.innerHTML = remaining + ' character';
+		limitLabel.innerHTML = remaining + ' char';
 		if(remaining != 1)
 			limitLabel.innerHTML += 's';
 		limitLabel.innerHTML += ' remaining';
@@ -108,7 +108,7 @@ function displayCharCounts(element)
 			remaining = Math.abs(remaining);
 			
 			limitLabel.style.color = 'red';
-			limitLabel.innerHTML = 'Over by ' + remaining + ' character';
+			limitLabel.innerHTML = 'Over by ' + remaining + ' char';
 			if (remaining != 1) 
 				limitLabel.innerHTML += 's';
 			limitLabel.innerHTML += '!';

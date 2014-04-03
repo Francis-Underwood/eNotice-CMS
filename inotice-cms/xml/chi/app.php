@@ -1,6 +1,6 @@
 <?php
-require_once('../../admin/Config.php');
-require_once('../../admin/DBFunc.php');
-require_once('../../admin/funcs.php');
+require_once('../../admin/includes/Config.inc.php');
+require_once('../../admin/includes/DBFunc.inc.php');
+require_once('../../admin/includes/funcs.inc.php');
 
 ?>

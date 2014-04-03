@@ -17,16 +17,16 @@
 	//
 
 
-	IF ((isset($_POST['submit'])) && (($_POST['submit']) == "Save") )
+	IF ((isset($_POST['submit'])) && (($_POST['submit']) == "Del Selected Images") )
 	{
 	$data['deleted_img'] = $_POST['deleted_img'];
 	  if (del_banner_images($data)) {
-		//$positive_msg = "Saved";
+		$positive_msg = "Images Deleted";
 	  }  else  {
-		//$error_msg = "Saved failed!!!";
+		$error_msg = "Images Delete failed!!!";
 	 }
 	} 
-	else Save_err_msg("");
+	//else Save_err_msg("");
 	
 	$error_msg2 = Select_err_msg();
 	
@@ -34,5 +34,5 @@
 	$banner_image_data = Select_banner_image(-1);
 	
 	//Views Template("control_banner_img_list");
-	require_once('views/control_banner_img_list.php');
+	require_once('views/control_banner_img_list.tmp.php');
 ?>

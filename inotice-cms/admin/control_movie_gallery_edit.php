@@ -25,5 +25,5 @@ $tip_msg = "";
 	$movie_gallery_data = Select_movie_gallery($id);
 	
 	//Views Template("control_movie_gallery_edit");
-	require_once('views/control_movie_gallery_edit.php');
+	require_once('views/control_movie_gallery_edit.tmp.php');
 } ?>

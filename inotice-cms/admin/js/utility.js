@@ -1,7 +1,9 @@
+var idsquare = idsquare || {}
+idsquare.wilson = idsquare.wilson || {}
 
 
 //Check is numeric and the range
-function number_vaild(input, min, max){
+idsquare.wilson.number_vaild = function (input, min, max) {
     if (!isNaN(input))  {
 		if ((input < min) || (input > max)) {
 			return false;
@@ -14,9 +16,10 @@ function number_vaild(input, min, max){
 	return true;
 }
   
-  
+
 //Set focus at the first text box
-function setFocus(){
+//function setFocus() {
+idsquare.wilson.setFocus = function () {
  var flag=false;
  for(z=0;z<document.forms.length;z++){
   var form = document.forms[z];
@@ -35,32 +38,8 @@ function setFocus(){
  }
 }
 
-//Confirm Box
-
-function decision(message, url){
-	if(confirm(message)) location.href = url;
-}
-
-
-//String TIRM 
-//去除字串左邊的空白虛格
-function ltrim(instr){
-return instr.replace(/^[\s]*/gi,"");
-}
-
-//去除字串右邊的空白虛格
-function rtrim(instr){
-return instr.replace(/[\s]*$/gi,"");
-}
-
-//去除字串前後的空白虛格
-function trim(instr){
-instr = ltrim(instr);
-instr = rtrim(instr);
-return instr;
-}
-
-function echeck(str) {
+//function echeck(str) {
+idsquare.wilson.echeck = function (str) {
 		var at="@"
 		var dot="."
 		var lat=str.indexOf(at)
@@ -95,9 +74,9 @@ function echeck(str) {
 		 }
 
  		 return true					
-	}
+}
 	
-	
+
 	
 /*
 	Password Validator 0.1
@@ -107,8 +86,10 @@ function echeck(str) {
 	Ref: http://blog.stevenlevithan.com/archives/javascript-password-validator
 */
 
-function pw_check_a(pw, minlength) {
-	var passed = validatePassword(pw, {
+//function pw_check_a(pw, minlength) {
+
+idsquare.wilson.pw_check_a = function (pw, minlength) {
+	var passed = idsquare.wilson.validatePassword(pw, {
 		length:   [minlength, Infinity],
 		lower:    1,
 		upper:    1,
@@ -121,7 +102,9 @@ function pw_check_a(pw, minlength) {
 	return passed;
 }
 
-function validatePassword (pw, options) {
+
+//function validatePassword (pw, options) {
+idsquare.wilson.validatePassword = function (pw, options) {
 	// default options (allows any password)
 	var o = {
 		lower:    0,
@@ -204,4 +187,30 @@ function validatePassword (pw, options) {
 
 	// great success!
 	return true;
+}
+	
+
+//Confirm Box
+
+function decision(message, url){
+	if(confirm(message)) location.href = url;
+}
+
+
+//String TIRM 
+//去除字串左邊的空白虛格
+function ltrim(instr){
+	return instr.replace(/^[\s]*/gi,"");
+}
+
+//去除字串右邊的空白虛格
+function rtrim(instr){
+	return instr.replace(/[\s]*$/gi,"");
+}
+
+//去除字串前後的空白虛格
+function trim(instr){
+	instr = ltrim(instr);
+	instr = rtrim(instr);
+	return instr;
 }

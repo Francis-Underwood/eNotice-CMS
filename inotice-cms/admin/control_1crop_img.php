@@ -1,5 +1,6 @@
 <?php
 If ((isset($_GET['subject'])) && (isset($_GET['img_id'])) ) {
+
 	$subject = ($_GET['subject']);
 	$image_id = ($_GET['img_id']);
 	$id2 = (isset($_GET['id2']))?($_GET['id2']):0;
@@ -9,21 +10,21 @@ If ((isset($_GET['subject'])) && (isset($_GET['img_id'])) ) {
 	switch ($subject) {
 		case "logo":
 		case "bg":
-			$Redirect = "main.php?page=setting_main";
-			break;
+			//$Redirect = "main.php?page=setting_main";
+			//break;
 		case "menu_icons":
 			//$Redirect = "main.php?page=setting_main";
 			$Redirect = "main.php?page=setting_image_edit&subject=$subject&id=$image_id";
 			break;			
 		case "news":
-			$Redirect = "main.php?page=control_main&cpage=control_news_edit&action=edit&news_id=$id2";
+			$Redirect = "main.php?page=control_news_edit&action=edit&news_id=$id2";
 			break;
 		case "about_us":
-			$Redirect = "main.php?page=control_main&cpage=control_about_us";
+			$Redirect = "main.php?page=control_about_us";
 			break;
 		case "banner_image":
-			$Redirect = "main.php?page=control_main&cpage=control_banner_img_edit&id=$image_id";
-			//$Redirect = "main.php?page=control_main&cpage=control_banner_img_list";
+			$Redirect = "main.php?page=control_banner_img_edit&id=$image_id";
+			//$Redirect = "main.php?page=control_banner_img_list";
 			break;
 		default:
 			$Redirect = "main.php?page=control_main";
@@ -44,6 +45,29 @@ If ((isset($_GET['subject'])) && (isset($_GET['img_id'])) ) {
 	$best_resolution = explode(" x ", $config_data['finished_resolution_text']);
 	$matched_width = $best_resolution[0];
 	$matched_height = $best_resolution[1];
+	
+	//****zoom function (按比例縮細) ****
+	//**(CMS tmp 圖片最大闊度為 730)**
+	
+	//$zoom = 0.38;
+	tolog("img_width   " . $img_width);	
+	tolog("img_height   " . $img_height);
+	tolog("matched_width   " . $matched_width);
+	tolog("matched_height   " . $matched_height);
+	
+	$zoom = calc_max_zoom_ratio(730, $img_width, $matched_width);
+	$img_width = (int)($img_width * $zoom);	
+	$img_height = (int)($img_height * $zoom);
+	$matched_width = (int)($matched_width * $zoom);
+	$matched_height = (int)($matched_height * $zoom);
+	//****
+	
+	// debug
+	tolog("zoom   " . $zoom);
+	tolog("img_width after zoom   " . $img_width);	
+	tolog("img_height after zoom   " . $img_height);
+	tolog("matched_width after zoom   " . $matched_width);
+	tolog("matched_height after zoom   " . $matched_height);
 	//
 
 	
@@ -68,6 +92,8 @@ If ((isset($_GET['subject'])) && (isset($_GET['img_id'])) ) {
 			$btn_disabled=" disabled='1' ";
 			
 			$dest1 = $image_path."/".$file_info['basename'];
+			
+			/* 
 			$x = ($_POST['x']);
 			$y = ($_POST['y']);
 			
@@ -77,18 +103,43 @@ If ((isset($_GET['subject'])) && (isset($_GET['img_id'])) ) {
 			$crop_width = ($crop_width  > $img_width)?($img_width):($crop_width);
 			$crop_height = ($crop_height  > $img_height)?($img_height):($crop_height);
 			//
-
+			
+			*/
+			
+			//****Zoom function (還原, 按比例放大)****
+			$img_width = $srcSize[0];
+			$img_height = $srcSize[1];
+			$matched_width = $best_resolution[0];
+			$matched_height = $best_resolution[1];
+			
+			$x = ($_POST['x']);
+			$y = ($_POST['y']);
+			$x = (int)($x / $zoom);
+			$y = (int)($y / $zoom);
+			
+			//如果crop出的長/闊大於圖片的長/闊，設定crop出的長/闊為圖片的長/闊
+			$crop_width = ($_POST['w']);
+			$crop_height = ($_POST['h']);
+			$crop_width = (int)($crop_width / $zoom);
+			$crop_height = (int)($crop_height / $zoom);
+			
+			$crop_width = ($crop_width  > $img_width)?($img_width):($crop_width);
+			$crop_height = ($crop_height  > $img_height)?($img_height):($crop_height);
+			//
+			
+			//****
+			
 			imagesResize_custom($src,$dest1, $x, $y, $matched_width, $matched_height, $crop_width, $crop_height);
 			
 			//**Waiting for 0 sec for proc the image**
-			//Redirect($Redirect);
+			Redirect($Redirect);
 			
 			//**Waiting for 1 sec for proc the image**
-			Redirect_wait($Redirect,1);
+			//Redirect_wait($Redirect,1);
 		}
 	} 
 	
 	//Views Template("control_1crop_img");
-	require_once('views/control_1crop_img.php');
+	require_once('views/control_1crop_img.tmp.php');
 }
 ?>

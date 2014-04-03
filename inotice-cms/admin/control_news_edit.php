@@ -39,19 +39,33 @@
 			case "add":
 				//Change to EDIT mode after saved
 				$news_id = mysql_insert_id();
-				$mode = "edit";			
+				//$mode = "edit";
+				redirect("main.php?page=control_news_edit&news_id=$news_id");
 				break;
 			default:
 				break;
 		}
 	}  else  {
-		$error_msg = "Saved failed!!!";
+		//$error_msg = "Saved failed!!!";
 	}
 	
 	}
 	else Save_err_msg("");
 	
 	$error_msg2 = Select_err_msg();
+	
+	
+	//Delete news image
+	IF ((isset($_GET['action'])) && (isset($_GET['news_id'])) && (isset($_GET['img_id'])) && (($_GET['action']) == "del") )
+	{
+		if (del_news_image($_GET['img_id'])) {
+			$positive_msg = "Image Deleted";
+		}  else  {
+			$error_msg = "Image delete failed!!!";
+		}
+		Redirect("main.php?page=control_news_edit&news_id=".$_GET['news_id']);	
+	}
+	//	
 	
 	switch ($mode) {
 		case "edit":
@@ -65,5 +79,5 @@
 	}
 	
 	//Views Template("control_news_edit");
-	require_once('views/control_news_edit.php');
+	require_once('views/control_news_edit.tmp.php');
 ?>

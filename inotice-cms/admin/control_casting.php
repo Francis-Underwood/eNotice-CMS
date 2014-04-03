@@ -1,5 +1,4 @@
 <?php
-
 	$positive_msg = "";
 	$error_msg = "";
 	$tip_msg = "";
@@ -17,5 +16,5 @@
 	$casting_data = Select_casting();
 
 	//Views Template("control_casting");
-	require_once('views/control_casting.php');
+	require_once('views/control_casting.tmp.php');
 ?>

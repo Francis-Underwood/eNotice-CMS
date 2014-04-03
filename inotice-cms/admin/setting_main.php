@@ -1,4 +1,6 @@
 <?php
+	$subject = isset($_REQUEST['subject'])?$_REQUEST['subject']:"";
+	
 	$positive_msg = "";
 	$error_msg = "";
 	$tip_msg = "";
@@ -44,8 +46,20 @@
 	}
 	//
 	
+	
+	$top = (isset($_REQUEST['top']))?($_REQUEST['top']):("");	
+	switch ($subject) {
+		case "logo":
+		case "bg":
+			$top = "bg";
+			break;
+		case "menu_icons":
+			$top = "menu";
+			break;
+	}
+
 	//***Get Data***
-	//1. Title and other info
+	//1. Title and Other info
 	$config_title_data = Select_config_title();
 	//2. logo
 	$config_data['logo'] = upload_file_config("logo",-1);
@@ -59,5 +73,5 @@
 	$menu_icon_data = Select_images("menu_icons",-1,0);
 	
 	//Views Template("setting_main");
-	require_once('views/setting_main.php');
+	require_once('views/setting_main.tmp.php');
 ?>

@@ -3,7 +3,7 @@
 	$mode = ($aid > 0)?"edit":"add";
 	
 	$config_data = upload_file_config("gallery",-1);
-	$up_page = "main.php?page=control_main&cpage=control_gallery_list";
+	$up_page = "main.php?page=control_gallery_list";
 
 	$positive_msg = "";
 	$error_msg = "";
@@ -23,7 +23,8 @@
 				case "add":
 					//Change to EDIT mode after saved
 					$aid = mysql_insert_id();
-					$mode = "edit";			
+					//$mode = "edit";
+					redirect("main.php?page=control_gallery_edit&aid=$aid");
 					break;
 				default:
 					break;
@@ -33,6 +34,17 @@
 			$error_msg = "Saved failed!!!";
 		}
 	}
+	
+	
+	IF ((isset($_REQUEST['action'])) && (isset($_REQUEST['id'])) && (($_REQUEST['action']) == "del"))
+	{
+		//tolog("Del already!!");
+		$del_img_id = $_REQUEST['id'];
+		//tolog("del_img_id = $del_img_id");
+		if (del_gallery_one_photo($aid, $del_img_id))  
+		  $positive_msg = "Image Deleted";
+		  else  $error_msg = "Delete failed!!!";
+	}	
 	
 	switch ($mode) {
 		case "edit":
@@ -57,5 +69,5 @@
 	}
 
 	//Views Template("control_gallery_edit");
-	require_once('views/control_gallery_edit.php');
+	require_once('views/control_gallery_edit.tmp.php');
 ?>

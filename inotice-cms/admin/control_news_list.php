@@ -15,5 +15,5 @@
 	$news_data = Select_news(-1);
 	
 	//Views Template("control_news_list");
-	require_once('views/control_news_list.php');
+	require_once('views/control_news_list.tmp.php');
 ?>

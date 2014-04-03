@@ -12,10 +12,11 @@
 			$error_msg = "Album delete failed!!!";
 		 }
 	}
+	
 	del_empty_gallery_album();
 	$gallery_album_count = Count_gallery_album(-1);
 	$gallery_album_data = Select_gallery_album(-1);
 
 	//Views Template("control_gallery_list");
-	require_once('views/control_gallery_list.php');
+	require_once('views/control_gallery_list.tmp.php');
 ?>
